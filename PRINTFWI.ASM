@@ -18,6 +18,7 @@ Start:
 		Ret
 
 OutLine:	db 'love', 0h
+Control:	db '%b', 0h
 ControlLine	db 'I %s %x. %d %%%c %b', 0h
 MaxLenOutNumStr	equ 31d
 StrForOutNumber	db MaxLenOutNumStr Dup(0), '$'
@@ -79,33 +80,22 @@ printf		proc
 		sub bx, 2		;
 		mov ax, word ptr [bx]	; put argument in ax
 
+		xchg bx, dx
+		mov dx, word ptr [bx]
 		jmp dx
 
 ;-------------------------------------------------
 @@JumpTable:
-	jmp short @@BinNum			;'b'
-	jmp short @@CharOut			;'c'
-	jmp short @@DecNum			;'d'
-	jmp short @@start		;'e'
-	jmp short @@start		;'f'
-	jmp short @@start		;'g'
-	jmp short @@start		;'h'
-	jmp short @@start		;'i'
-	jmp short @@start		;'j'
-	jmp short @@start		;'k'
-	jmp short @@start		;'l'
-	jmp short @@start		;'m'
-	jmp short @@start		;'n'
-	jmp short @@OxNum			;'o'
-	jmp short @@start		;'p'
-	jmp short @@start		;'q'
-	jmp short @@start		;'r'
-	jmp short @@StrOut			;'s'
-	jmp short @@start		;'t'
-	jmp short @@start		;'u'
-	jmp short @@start		;'v'
-	jmp short @@start		;'w'
-	jmp short @@XecNum			;'x'
+	dw offset @@BinNum			;'b'
+	dw offset @@CharOut			;'c'
+	dw offset @@DecNum			;'d'
+	dw ('n' - 'e' + 1) Dup(offset @@start)	;'e'-'n'
+	dw offset @@OxNum			;'o'
+	dw ('r' - 'p' + 1) Dup(offset @@start)	;'p'-'r'
+	dw offset @@StrOut			;'s'
+	dw ('w' - 't' + 1) Dup(offset @@start)	;'t'-'w'
+	dw offset @@XecNum			;'x'
+
 ;-------------------------------------------------
 @@CharOut:	mov dl, al
 		mov ah, 02h
