@@ -18,7 +18,6 @@ Start:
 		Ret
 
 OutLine:	db 'love', 0h
-Control:	db '%b', 0h
 ControlLine	db 'I %s %x. %d %%%c %b', 0h
 MaxLenOutNumStr	equ 31d
 StrForOutNumber	db MaxLenOutNumStr Dup(0), '$'
