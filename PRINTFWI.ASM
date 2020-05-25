@@ -150,7 +150,6 @@ printf		proc
 
  @@outnum:	inc si
 		mov dl, byte ptr [si]
-		mov al, '0'
 		mov ah, 02h
 		
  @@for:		add dl, '0'
